@@ -26,7 +26,7 @@ class AESdecrypt {
 		SecretKey secretKey;
 
 		if(args.length < 2){
-			System.out.print("Usage: java AES_decrypt [cipherdata] [secret key]\n");
+			System.out.print("Usage: java AESdecrypt [cipherdata] [secret key]\n");
 			System.exit(0);
 		}
 
