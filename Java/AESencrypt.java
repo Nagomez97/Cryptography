@@ -8,10 +8,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-class AES_encrypt {
-	public static final int keyLength = 128;
+class AESencrypt {
+	public static final int keyLength = 256;
 	public static final String charEnc = "UTF-8";
 	public static final String transformationString = "AES/CFB/PKCS5PADDING";
+	public static final String encMode = "AES";
 
 	public static void main(String[] args) {
 		String message;
@@ -26,7 +27,7 @@ class AES_encrypt {
 
 		try {
 			// Step 1: generate keyLength-key
-			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+			KeyGenerator keyGen = KeyGenerator.getInstance(encMode);
 			keyGen.init(keyLength);
 			SecretKey secretKey = keyGen.generateKey();
 
@@ -49,25 +50,7 @@ class AES_encrypt {
 			cipherData.put(iv);
 			cipherData.put(encrypted);
 			cipherText = new String(Base64.getEncoder().encode(cipherData.array()), charEnc);
-			//System.out.println("Encrypted and encoded message is: " + new String(Base64.getEncoder().encode(encrypted), charEnc));
-			System.out.println("Encrypted and encoded message is: " +cipherText);
-
-			////////////////////////////////////////////////7
-
-			// Step 1: get the cipher instance.
-			Cipher aesCipherForDecryption = Cipher.getInstance(transformationString);
-
-			// Step 2: get the decoded cipher data and the IV (first block)
-			cipherData = ByteBuffer.wrap(Base64.getDecoder().decode(cipherText.getBytes(charEnc)));;
-			iv = new byte[aesCipherForDecryption.getBlockSize()];
-			cipherData.get(iv);
-			encrypted = new byte[cipherData.remaining()];
-			cipherData.get(encrypted);
-			aesCipherForDecryption.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
-
-			// Step 3: decrypt the message.
-			byte[] decrypted = aesCipherForDecryption.doFinal(encrypted);
-			System.out.println("Decrypted text message is: " + new String(decrypted, charEnc));
+			System.out.println("Encrypted and encoded message is: " + cipherText);
 
 
 		} catch(NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | UnsupportedEncodingException ex) {

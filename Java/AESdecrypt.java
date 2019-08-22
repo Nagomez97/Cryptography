@@ -12,17 +12,17 @@ import java.security.SecureRandom;
 import java.security.Key;
 import java.util.Base64;
 
-class AES_decrypt {
-	public static final int keyLength = 128;
+class AESdecrypt {
+	public static final int keyLength = 256;
 	public static final String charEnc = "UTF-8";
 	public static final String transformationString = "AES/CFB/PKCS5PADDING";
+	public static final String encMode = "AES";
 
 	public static void main(String[] args) {
 		String cipherText;
 		String encodedKey;
 		byte[] keyBytes;
 		byte[] encrypted;
-		SecretKey secretKeySpec;
 		SecretKey secretKey;
 
 		if(args.length < 2){
@@ -37,7 +37,7 @@ class AES_decrypt {
 		try {
 			//Step 1: Get the key and decode it.
 			keyBytes = Base64.getDecoder().decode(encodedKey.getBytes(charEnc));
-			secretKeySpec = new SecretKeySpec(keyBytes, "AES");
+			secretKey = new SecretKeySpec(keyBytes, encMode);
 
 			// Step 2: get the cipher instance.
 			Cipher aesCipherForDecryption = Cipher.getInstance(transformationString);
@@ -48,7 +48,7 @@ class AES_decrypt {
 			cipherData.get(iv);
 			encrypted = new byte[cipherData.remaining()];
 			cipherData.get(encrypted);
-			aesCipherForDecryption.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(iv));
+			aesCipherForDecryption.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
 
 			// Step 4: decrypt the message.
 			byte[] decrypted = aesCipherForDecryption.doFinal(encrypted);
