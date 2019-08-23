@@ -43,7 +43,7 @@ class AESdecrypt {
 			Cipher aesCipherForDecryption = Cipher.getInstance(transformationString);
 
 			// Step 3: get the decoded cipher data and the IV (first block)
-			ByteBuffer cipherData = ByteBuffer.wrap(Base64.getDecoder().decode(cipherText.getBytes(charEnc)));;
+			ByteBuffer cipherData = ByteBuffer.wrap(Base64.getDecoder().decode(cipherText.getBytes(charEnc)));
 			byte[] iv = new byte[aesCipherForDecryption.getBlockSize()];
 			cipherData.get(iv);
 			encrypted = new byte[cipherData.remaining()];
