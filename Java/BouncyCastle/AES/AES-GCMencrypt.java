@@ -49,19 +49,17 @@ class GCMencrypt {
 			Cipher aesCipherForEncryption = Cipher.getInstance(transformationString, "BC");
 
 			// Step 3: Initialize the IV using a secure random function.
-			byte[] iv = new byte[12];
+			byte[] nonce = new byte[12];
 			SecureRandom prng = new SecureRandom();
-			prng.nextBytes(iv);
-
-			System.out.println("IV: " + new String(iv));
+			prng.nextBytes(nonce);
 
 			// Step 4
-			aesCipherForEncryption.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(128, iv));
+			aesCipherForEncryption.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(128, nonce));
 
 			// Step 5
 			byte[] encrypted = aesCipherForEncryption.doFinal(message.getBytes(charEnc));
-			ByteBuffer cipherData = ByteBuffer.allocate(iv.length + encrypted.length);
-			cipherData.put(iv);
+			ByteBuffer cipherData = ByteBuffer.allocate(nonce.length + encrypted.length);
+			cipherData.put(nonce);
 			cipherData.put(encrypted);
 			cipherText = new String(Base64.getEncoder().encode(cipherData.array()), charEnc);
 			System.out.println("Encrypted and encoded message is: " + cipherText);

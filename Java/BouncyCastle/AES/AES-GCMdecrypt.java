@@ -52,14 +52,12 @@ class GCMdecrypt {
 
 			// Step 3: get the decoded cipher data and the IV (first block)
 			ByteBuffer cipherData = ByteBuffer.wrap(Base64.getDecoder().decode(cipherText.getBytes(charEnc)));
-			byte[] iv = new byte[12];
-			cipherData.get(iv); 
+			byte[] nonce = new byte[12];
+			cipherData.get(nonce); 
 			encrypted = new byte[cipherData.remaining()];
 			cipherData.get(encrypted);
-			aesCipherForDecryption.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(128, iv));
-
-			System.out.println("IV: " + new String(iv));
-
+			aesCipherForDecryption.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(128,nonce));
+			
 			// Step 4: decrypt the message.
 			byte[] decrypted = aesCipherForDecryption.doFinal(encrypted);
 
