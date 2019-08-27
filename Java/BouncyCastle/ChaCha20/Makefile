@@ -5,8 +5,8 @@ JC = javac -cp ../bouncycastle.jar
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-        CAMELLIAencrypt.java \
-        CAMELLIAdecrypt.java
+        ChaCha20encrypt.java \
+        ChaCha20decrypt.java
 
 default: classes
 
