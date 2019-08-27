@@ -1,0 +1,3 @@
+Every bouncycastle implementation requires the bouncycastle.jar to be included in running time.
+That's why it is important to run every java executable with the -cp flag, aiming to the .jar file:
+java -cp ../bouncycastle:. <executable name> <parameters>
